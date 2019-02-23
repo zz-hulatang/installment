@@ -1,5 +1,6 @@
 package com.fukai.installment.controller;
 
+import com.fukai.installment.bean.InstallmentEntity;
 import com.fukai.installment.bean.User;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ public class UserController {
 
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void test(@RequestBody User bean){
+    public void addUser(@RequestBody User user,@RequestBody InstallmentEntity installmentEntity) throws Exception{
         String id = UUID.randomUUID().toString();
-        bean.setId(id);
-        userService.save(bean);
+        user.setId(id);
+        String id1 = UUID.randomUUID().toString();
+        installmentEntity.setId(id1);
+        userService.save(user,installmentEntity);
     }
 }

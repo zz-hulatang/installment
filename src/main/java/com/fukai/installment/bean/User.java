@@ -1,8 +1,7 @@
 package com.fukai.installment.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @Author: luoxiaozhu
@@ -13,9 +12,46 @@ import javax.persistence.Table;
 public class User {
     @Id
     private String id;
-    private String account;
+    private String IDcard;
     private String name;
     private String password;
+    private String mobilephone;
+    private Date createTime;
+
+    @Transient
+    private InstallmentEntity installmentEntity;
+
+    public InstallmentEntity getInstallmentEntity() {
+        return installmentEntity;
+    }
+
+    public void setInstallmentEntity(InstallmentEntity installmentEntity) {
+        this.installmentEntity = installmentEntity;
+    }
+
+    public String getIDcard() {
+        return IDcard;
+    }
+
+    public void setIDcard(String IDcard) {
+        this.IDcard = IDcard;
+    }
+
+    public String getMobilephone() {
+        return mobilephone;
+    }
+
+    public void setMobilephone(String mobilephone) {
+        this.mobilephone = mobilephone;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getId() {
         return id;
@@ -23,14 +59,6 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 
     public String getName() {
