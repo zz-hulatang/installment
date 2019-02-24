@@ -10,6 +10,7 @@ import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     //删除用户
     public void deleteUser(User user) {
-        userRepository.deleteById(user.getId());
+        userRepository.delete(user.getId());
     }
 
     @Override
@@ -102,7 +103,8 @@ public class UserServiceImpl implements UserService {
 
         //查询数据库中user总数
         long count = userRepository.count();
-        PageRequest request = PageRequest.of(page, size);
+//        PageRequest request = PageRequest.of(page, size);
+        PageRequest request = new PageRequest(page,size);
         Page<User> userPage = userRepository.findAll(request);
         List<User> users = userPage.getContent();
         for (User user:users) {
@@ -152,8 +154,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
     public Map<String, Object> editRepayState(String installmentInfoId, String state) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
-        Optional<InstallmentInfoEntity> info = installmentInfoRepository.findById(installmentInfoId);
-        InstallmentInfoEntity infoEntity = info.get();
+        InstallmentInfoEntity infoEntity = installmentInfoRepository.findOne(installmentInfoId);
+//        InstallmentInfoEntity infoEntity = info.get();
         infoEntity.setRepayState(state);
         installmentInfoRepository.save(infoEntity);
         result.put("retCode","200");
@@ -179,7 +181,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User queryUser(String id) {
-        return userRepository.findById(id).get();
+        return userRepository.findOne(id);
     }
 
 
