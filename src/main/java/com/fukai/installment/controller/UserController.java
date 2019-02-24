@@ -1,6 +1,7 @@
 package com.fukai.installment.controller;
 
 import com.fukai.installment.bean.InstallmentEntity;
+import com.fukai.installment.bean.InstallmentInfoEntity;
 import com.fukai.installment.bean.User;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,11 +27,33 @@ public class UserController {
 
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addUser(@RequestBody User user,@RequestBody InstallmentEntity installmentEntity) throws Exception{
+    @ResponseBody
+    public Map<String, Object> addUser(@RequestBody User user,@RequestBody InstallmentEntity installmentEntity) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
         String id = UUID.randomUUID().toString();
         user.setId(id);
         String id1 = UUID.randomUUID().toString();
         installmentEntity.setId(id1);
-        userService.save(user,installmentEntity);
+        try {
+            result = userService.save(user, installmentEntity);
+        }catch (Exception e){
+            result.put("retCode","500");
+            result.put("retMsg","创建用户失败！");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> queryUserList() throws Exception{
+        List<User> userList = userService.selectUserList();
+        return userList;
+    }
+
+    @RequestMapping(value = "/queryInstallmentInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public List<InstallmentInfoEntity> queryInstallmentList(String installId) throws Exception{
+        List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList(installId);
+        return infoList;
     }
 }
