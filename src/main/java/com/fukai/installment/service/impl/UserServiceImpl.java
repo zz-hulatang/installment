@@ -98,14 +98,18 @@ public class UserServiceImpl implements UserService {
     //查询用户列表
     public List<User> selectUserList(int page,int size) {
 
+        //查询数据库中user总数
+        long count = userRepository.count();
         PageRequest request = PageRequest.of(page, size);
         Page<User> userPage = userRepository.findAll(request);
         List<User> users = userPage.getContent();
         for (User user:users) {
             InstallmentEntity installmentEntity = installmentRepository.findByUserId(user.getId());
             user.setInstallmentEntity(installmentEntity);
+            user.setCount(count);
         }
         return users;
+
     }
 
     @Override
@@ -128,6 +132,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByMobilePhoneAndPassword(mobilePhone,password);
     }
 
+    /**
+     * 修改还款状态
+     * @param installmentInfoId
+     * @param state
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
     public Map<String, Object> editRepayState(String installmentInfoId, String state) throws Exception{
@@ -140,5 +151,17 @@ public class UserServiceImpl implements UserService {
         result.put("retMsg", "修改还款状态成功！");
         return result;
     }
+
+    /**
+     * 根据登录人id查询贷款明细信息 app前台使用
+     * @param userId
+     * @return
+     */
+    @Override
+    public InstallmentEntity selectInstallmentListByUserId(String userId) {
+        InstallmentEntity installmentEntity = installmentRepository.findByUserId(userId);
+        return installmentEntity;
+    }
+
 
 }

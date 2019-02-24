@@ -76,6 +76,19 @@ public class UserController {
     }
 
     /**
+     * 查询贷款信息主表 app调用
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/queryInstallment",method = RequestMethod.POST)
+    @ResponseBody
+    public InstallmentEntity queryInstallment(String userId) throws Exception{
+        InstallmentEntity installmentEntity = userService.selectInstallmentListByUserId(userId);
+        return installmentEntity;
+    }
+
+    /**
      * 修改还款状态
      * @return
      * @throws Exception

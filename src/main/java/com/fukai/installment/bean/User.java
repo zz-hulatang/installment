@@ -20,6 +20,16 @@ public class User {
 
     @Transient
     private InstallmentEntity installmentEntity;
+    @Transient
+    private long count;//user数据总量
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
 
     public InstallmentEntity getInstallmentEntity() {
         return installmentEntity;
