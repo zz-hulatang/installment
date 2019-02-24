@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -21,6 +23,7 @@ import java.util.*;
  * @Date: 2019-02-21 22:52
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -30,43 +33,45 @@ public class UserServiceImpl implements UserService {
     private InstallmentInfoRepository installmentInfoRepository;
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
     // 添加用户
     public Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
-        userRepository.save(user);// 保存用户信息
-        installmentEntity.setUserId(user.getId());
-        installmentRepository.save(installmentEntity);// 保存贷款信息主表数据
+             Map<String,Object> result = new HashMap<String,Object>();
+            userRepository.save(user);// 保存用户信息
+            installmentEntity.setUserId(user.getId());
+            installmentRepository.save(installmentEntity);// 保存贷款信息主表数据
 
-        //从贷款主表中获取本金、利率、贷款期数等数据经过计算生成贷款明细数据
-        double installmentAmount = installmentEntity.getInstallmentAmount();//本金
-        double interestRate = installmentEntity.getInterestRate();//利率
-        int repayNumber = installmentEntity.getRepayNumber();//还款总期数
-        Date repayDate = installmentEntity.getRepayDate();//首次还款日期
-        if (repayNumber==0) repayNumber = 36;
-        BigDecimal amount;
-        BigDecimal rate;
-        //计算每期还款额
-        if (installmentAmount==0){
-            throw new Exception("贷款本金为0创建用户失败！");
-        }else{
-            amount = new BigDecimal(Double.toString(installmentAmount));
-        }
-        if (interestRate==0){
-            throw new Exception("执行利率为0创建用户失败！");
-        }else{
-            rate = new BigDecimal(Double.toString(interestRate));
-        }
-        BigDecimal amountAll = amount.multiply(rate);//总金额
-        double averageAmount = amountAll.divide(rate, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            //从贷款主表中获取本金、利率、贷款期数等数据经过计算生成贷款明细数据
+            double installmentAmount = installmentEntity.getInstallmentAmount();//本金
+            double interestRate = installmentEntity.getInterestRate();//利率
+            int repayNumber = installmentEntity.getRepayNumber();//还款总期数
+            Date repayDate = installmentEntity.getRepayDate();//首次还款日期
+            if (repayNumber==0) repayNumber = 36;
+            BigDecimal amount;
+            BigDecimal rate;
+            //计算每期还款额
+            if (installmentAmount==0){
+                throw new Exception("贷款本金为0创建用户失败！");
+            }else{
+                amount = new BigDecimal(Double.toString(installmentAmount));
+            }
+            if (interestRate==0){
+                throw new Exception("执行利率为0创建用户失败！");
+            }else{
+                rate = new BigDecimal(Double.toString(interestRate));
+            }
+            BigDecimal amountAll = amount.multiply(rate);//总金额
+            double averageAmount = amountAll.divide(rate, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        for (int i = 0; i < repayNumber; i++) {
-            InstallmentInfoEntity installmentInfoEntity = new InstallmentInfoEntity();
-            installmentInfoEntity.setInstallId(installmentEntity.getId());
-            installmentInfoEntity.setRepayState("1");//默认已还款
-            installmentInfoEntity.setRepayDate(i+1);
-            installmentInfoEntity.setRepayAmount(averageAmount);
-            installmentInfoRepository.save(installmentInfoEntity);
-        }
+            for (int i = 0; i < repayNumber; i++) {
+                InstallmentInfoEntity installmentInfoEntity = new InstallmentInfoEntity();
+                installmentInfoEntity.setInstallId(installmentEntity.getId());
+                installmentInfoEntity.setRepayState("1");//默认已还款
+                installmentInfoEntity.setRepayDate(i+1);
+                installmentInfoEntity.setRepayAmount(averageAmount);
+                installmentInfoRepository.save(installmentInfoEntity);
+            }
+
         result.put("retCode","200");
         result.put("retMsg", "添加用户信息成功！");
         return result;
@@ -104,7 +109,7 @@ public class UserServiceImpl implements UserService {
             boolean flag = date.before(info.getRepayTime());
             if (flag==true)resultList.add(info);
         }
-        return null;
+        return resultList;
     }
 
     @Override
