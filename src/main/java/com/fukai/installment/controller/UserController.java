@@ -25,6 +25,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 添加用户
+     * @param user
+     * @param installmentEntity
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -43,6 +50,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 查询用户列表
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
     @ResponseBody
     public List<User> queryUserList() throws Exception{
@@ -50,10 +62,34 @@ public class UserController {
         return userList;
     }
 
+    /**
+     * 查询还款详情
+     * @param installId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/queryInstallmentInfo",method = RequestMethod.POST)
     @ResponseBody
     public List<InstallmentInfoEntity> queryInstallmentList(String installId) throws Exception{
         List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList(installId);
         return infoList;
+    }
+
+    /**
+     * 修改还款状态
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/editState",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> editRepayState(String installmentInfoId, String state){
+        Map<String,Object> result = new HashMap<String,Object>();
+        try {
+            result = userService.editRepayState(installmentInfoId, state);
+        }catch (Exception e){
+            result.put("retCode","500");
+            result.put("retMsg","修改还款状态失败失败！");
+        }
+        return result;
     }
 }

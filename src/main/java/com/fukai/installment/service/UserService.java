@@ -18,5 +18,5 @@ public interface UserService {
     List<InstallmentInfoEntity> selectInstallmentInfoList(String installId);
 
     User findByMobilePhoneAndPassword(String mobilePhone, String password);
-
+    Map<String,Object> editRepayState(String installmentInfoId,String state) throws Exception;
 }

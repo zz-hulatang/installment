@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
     // 添加用户
     public Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception{
-             Map<String,Object> result = new HashMap<String,Object>();
+            Map<String,Object> result = new HashMap<String,Object>();
             userRepository.save(user);// 保存用户信息
             installmentEntity.setUserId(user.getId());
             installmentRepository.save(installmentEntity);// 保存贷款信息主表数据
@@ -63,12 +63,23 @@ public class UserServiceImpl implements UserService {
             BigDecimal amountAll = amount.multiply(rate);//总金额
             double averageAmount = amountAll.divide(rate, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-            for (int i = 0; i < repayNumber; i++) {
+            //定义日期实例
+        Calendar data = Calendar.getInstance();
+        data.setTime(repayDate);//设置日期起始时间
+        for (int i = 0; i < repayNumber; i++) {
                 InstallmentInfoEntity installmentInfoEntity = new InstallmentInfoEntity();
+                String id = UUID.randomUUID().toString();
+                installmentInfoEntity.setId(id);
                 installmentInfoEntity.setInstallId(installmentEntity.getId());
                 installmentInfoEntity.setRepayState("1");//默认已还款
                 installmentInfoEntity.setRepayDate(i+1);
                 installmentInfoEntity.setRepayAmount(averageAmount);
+                if (i==0){
+                    installmentInfoEntity.setRepayTime(repayDate);
+                }else{
+                    data.add(Calendar.MONTH,1);//日期递增
+                    installmentInfoEntity.setRepayTime(data.getTime());
+                }
                 installmentInfoRepository.save(installmentInfoEntity);
             }
 
@@ -115,6 +126,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByMobilePhoneAndPassword(String mobilePhone, String password) {
         return userRepository.findByMobilePhoneAndPassword(mobilePhone,password);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
+    public Map<String, Object> editRepayState(String installmentInfoId, String state) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
+        Optional<InstallmentInfoEntity> info = installmentInfoRepository.findById(installmentInfoId);
+        InstallmentInfoEntity infoEntity = info.get();
+        infoEntity.setRepayState(state);
+        installmentInfoRepository.save(infoEntity);
+        result.put("retCode","200");
+        result.put("retMsg", "修改还款状态成功！");
+        return result;
     }
 
 }
