@@ -57,8 +57,8 @@ public class UserController {
      */
     @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
     @ResponseBody
-    public List<User> queryUserList() throws Exception{
-        List<User> userList = userService.selectUserList();
+    public List<User> queryUserList(int page,int size) throws Exception{
+        List<User> userList = userService.selectUserList(page,size);
         return userList;
     }
 

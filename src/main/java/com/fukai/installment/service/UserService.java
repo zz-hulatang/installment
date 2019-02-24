@@ -14,7 +14,7 @@ import java.util.Map;
 public interface UserService {
     Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception;
     void deleteUser(User user);
-    List<User> selectUserList();
+    List<User> selectUserList(int page,int size);
     List<InstallmentInfoEntity> selectInstallmentInfoList(String installId);
 
     User findByMobilePhoneAndPassword(String mobilePhone, String password);

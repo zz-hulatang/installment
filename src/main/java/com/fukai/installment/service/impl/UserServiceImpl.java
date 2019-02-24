@@ -96,9 +96,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //查询用户列表
-    public List<User> selectUserList() {
+    public List<User> selectUserList(int page,int size) {
 
-        PageRequest request = PageRequest.of(1, 10);
+        PageRequest request = PageRequest.of(page, size);
         Page<User> userPage = userRepository.findAll(request);
         List<User> users = userPage.getContent();
         for (User user:users) {
