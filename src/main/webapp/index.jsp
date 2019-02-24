@@ -94,15 +94,13 @@
         });
 
 		function callback(data) {
-			if (data.code == 200) {
-				localStorage.setItem("token", data.data.token);
-				localStorage.setItem("userId", data.data.id);
-				window.location.href = "${pageContext.request.contextPath}/url/success";
-			} else if (data.code == 403) {
-				msg("用户不存在或密码错误");
-			}else{
-			    msg("服务器错误");
-            }
+			if (data.success != null) {
+				localStorage.setItem("userName",data.user.name);
+				localStorage.setItem("userName",data.user.id)
+				window.location.href = "${pageContext.request.contextPath}/success";
+			} else{
+				msg(data.error);
+			}
 		}
 
 		function login() {

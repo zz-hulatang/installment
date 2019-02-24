@@ -107,4 +107,9 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public User findByMobilePhoneAndPassword(String mobilePhone, String password) {
+        return userRepository.findByMobilePhoneAndPassword(mobilePhone,password);
+    }
+
 }

@@ -2,6 +2,7 @@
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
+    <title>富凯分期</title>
     <jsp:include page="../../head.jsp"/>
 </head>
 
@@ -16,7 +17,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="${pageContext.request.contextPath}/url/success"><img src="${pageContext.request.contextPath}/static/assets/img/logo.png" alt=""></a>
+            <a href="${pageContext.request.contextPath}/success"><img src="${pageContext.request.contextPath}/static/assets/img/logo.png" alt=""></a>
 
             <div id="sideNav">
                 <i class="fa fa-bars icon"></i>
@@ -44,20 +45,20 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="${pageContext.request.contextPath}/url/success"><i class="fa fa-list"></i> 全部文章</a>
+                    <a class="active-menu" href="${pageContext.request.contextPath}/success"><i class="fa fa-list"></i> 用户管理</a>
                 </li>
 
-                <li>
-                    <a href="#"><i class="fa fa-file-text"></i> 我的文章<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/url/myArticle">文章列表</a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/url/op/add">添加文章</a>
-                        </li>
-                    </ul>
-                </li>
+                <%--<li>--%>
+                    <%--<a href="#"><i class="fa fa-file-text"></i> 我的文章<span class="fa arrow"></span></a>--%>
+                    <%--<ul class="nav nav-second-level">--%>
+                        <%--<li>--%>
+                            <%--<a href="${pageContext.request.contextPath}/url/myArticle">文章列表</a>--%>
+                        <%--</li>--%>
+                        <%--<li>--%>
+                            <%--<a href="${pageContext.request.contextPath}/url/op/add">添加文章</a>--%>
+                        <%--</li>--%>
+                    <%--</ul>--%>
+                <%--</li>--%>
                 <li>
                     <a href="#"><i class="fa fa-cogs"></i> 设置<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -78,11 +79,11 @@
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                全部文章 <small>欢迎光临七楼的南瓜饼子店</small>
+                全部用户 <small>欢迎光临富凯分期</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/url/success">主页</a></li>
-                <li><a href="${pageContext.request.contextPath}/url/success">全部文章</a></li>
+                <li><a href="${pageContext.request.contextPath}/success">主页</a></li>
+                <li><a href="${pageContext.request.contextPath}/success">用户管理</a></li>
                 <li class="active">列表</li>
             </ol>
 
@@ -95,15 +96,7 @@
                 <div class="col-sm-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#create" data-toggle="tab" onclick="createDate()">创建时间</a>
-                                </li>
-                                <li class=""><a href="#assent" data-toggle="tab" onclick="assentNum()">赞成数</a>
-                                </li>
-                                <li class=""><a href="#against" data-toggle="tab" onclick="againstNum()">反对数</a>
-                                </li>
-                            </ul>
-                            <br>
+
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="create">
                                 </div>
@@ -122,7 +115,7 @@
                 </div>
             </div>
 
-            <footer><p>Copyright &copy; 2017.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">七楼的南瓜饼子店</a></p>
+            <footer><p>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">七楼的南瓜饼子店</a></p>
 
 
             </footer>
@@ -179,51 +172,9 @@
             $("body").html(data);
         }
     }
-    function callback2(data) {
-        if(data.code){
-            var list = data.data.list;
-            showList(list,"assent");
-            $("#page").paging({
-                pageNo: page,
-                totalPage: data.data.pageCount,
-                totalSize: data.data.totalNum,
-                callback: function(num) {
-                    page = num;
-                    assentNum();
-                }
-            });
-        }else{
-            $("body").html(data);
-        }
-    }
-    function callback3(data) {
-        if(data.code){
-            var list = data.data.list;
-            showList(list,"against");
-            $("#page").paging({
-                pageNo: page,
-                totalPage: data.data.pageCount,
-                totalSize: data.data.totalNum,
-                callback: function(num) {
-                    page = num;
-                    againstNum();
-                }
-            });
-        }else{
-            $("body").html(data);
-        }
-    }
     function createDate() {
         orderBy = "createDate";
         getRequest("${pageContext.request.contextPath}/article/list/"+page+"/"+orderBy+"/"+sort,callback1);
-    }
-    function assentNum() {
-        orderBy = "assent";
-        getRequest("${pageContext.request.contextPath}/article/list/"+page+"/"+orderBy+"/"+sort,callback2);
-    }
-    function againstNum() {
-        orderBy = "against";
-        getRequest("${pageContext.request.contextPath}/article/list/"+page+"/"+orderBy+"/"+sort,callback3);
     }
 </script>
 

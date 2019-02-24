@@ -16,4 +16,7 @@ public interface UserService {
     void deleteUser(User user);
     List<User> selectUserList();
     List<InstallmentInfoEntity> selectInstallmentInfoList(String installId);
+
+    User findByMobilePhoneAndPassword(String mobilePhone, String password);
+
 }
