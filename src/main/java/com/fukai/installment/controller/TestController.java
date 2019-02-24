@@ -22,10 +22,7 @@ public class TestController {
     private UserService userService;
 
     @RequestMapping("/test")
-    @ResponseBody
-    public Map test(){
-        Map map = new HashMap();
-        map.put("test","aaa");
-        return map;
+    public String test(){
+        return "index";
     }
 }

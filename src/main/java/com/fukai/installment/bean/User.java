@@ -12,10 +12,10 @@ import java.util.Date;
 public class User {
     @Id
     private String id;
-    private String IDcard;
+    private String idCard;
     private String name;
     private String password;
-    private String mobilephone;
+    private String mobilePhone;
     private Date createTime;
 
     @Transient
@@ -29,20 +29,20 @@ public class User {
         this.installmentEntity = installmentEntity;
     }
 
-    public String getIDcard() {
-        return IDcard;
+    public String getIdCard() {
+        return idCard;
     }
 
-    public void setIDcard(String IDcard) {
-        this.IDcard = IDcard;
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
     }
 
-    public String getMobilephone() {
-        return mobilephone;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public Date getCreateTime() {

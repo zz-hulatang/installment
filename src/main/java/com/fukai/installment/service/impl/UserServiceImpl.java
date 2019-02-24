@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
         Page<User> userPage = userRepository.findAll(request);
         List<User> users = userPage.getContent();
         for (User user:users) {
-            InstallmentEntity installmentEntity = installmentRepository.findbyUserId(user.getId());
+            InstallmentEntity installmentEntity = installmentRepository.findByUserId(user.getId());
             user.setInstallmentEntity(installmentEntity);
         }
         return users;
