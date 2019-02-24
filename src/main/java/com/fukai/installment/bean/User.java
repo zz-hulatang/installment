@@ -17,6 +17,7 @@ public class User {
     private String password;
     private String mobilePhone;
     private Date createTime;
+    private String userType;//用户类型 0普通用户 1管理员
 
     @Transient
     private InstallmentEntity installmentEntity;
@@ -29,6 +30,14 @@ public class User {
 
     public void setCount(long count) {
         this.count = count;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public InstallmentEntity getInstallmentEntity() {

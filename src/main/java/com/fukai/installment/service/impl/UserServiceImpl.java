@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     // 添加用户
     public Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception{
             Map<String,Object> result = new HashMap<String,Object>();
+            user.setUserType("0");
             userRepository.save(user);// 保存用户信息
             installmentEntity.setUserId(user.getId());
             installmentRepository.save(installmentEntity);// 保存贷款信息主表数据
