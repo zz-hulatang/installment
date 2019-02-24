@@ -164,5 +164,15 @@ public class UserServiceImpl implements UserService {
         return installmentEntity;
     }
 
+    /**
+     * 查询用户信息 app调用
+     * @param id
+     * @return
+     */
+    @Override
+    public User queryUser(String id) {
+        return userRepository.findById(id).get();
+    }
+
 
 }

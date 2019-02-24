@@ -55,7 +55,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryUserList",method = RequestMethod.POST)
     @ResponseBody
     public List<User> queryUserList(int page,int size) throws Exception{
         List<User> userList = userService.selectUserList(page,size);
@@ -105,4 +105,16 @@ public class UserController {
         }
         return result;
     }
+
+    /**
+     * 查询用户信息 app调用
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
+    @ResponseBody
+    public User queryUser(String id) {
+        return userService.queryUser(id);
+    }
+
 }

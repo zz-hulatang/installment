@@ -20,5 +20,5 @@ public interface UserService {
     User findByMobilePhoneAndPassword(String mobilePhone, String password);
     Map<String,Object> editRepayState(String installmentInfoId,String state) throws Exception;
     InstallmentEntity selectInstallmentListByUserId(String userId);
-
+    User queryUser(String id);
 }
