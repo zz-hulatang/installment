@@ -55,10 +55,10 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/queryUserList",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryUser",method = RequestMethod.GET)
     @ResponseBody
     public List<User> queryUserList(int page,int size) throws Exception{
-        List<User> userList = userService.selectUserList(page,size);
+        List<User> userList = userService.selectUserList(page-1,size);
         return userList;
     }
 
@@ -68,7 +68,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/queryInstallmentInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryInstallmentInfo",method = RequestMethod.GET)
     @ResponseBody
     public List<InstallmentInfoEntity> queryInstallmentList(String installId) throws Exception{
         List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList(installId);
@@ -81,7 +81,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/queryInstallment",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryInstallment",method = RequestMethod.GET)
     @ResponseBody
     public InstallmentEntity queryInstallment(String userId) throws Exception{
         InstallmentEntity installmentEntity = userService.selectInstallmentListByUserId(userId);
@@ -93,7 +93,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/editState",method = RequestMethod.POST)
+    @RequestMapping(value = "/editState",method = RequestMethod.GET)
     @ResponseBody
     public Map<String,Object> editRepayState(String installmentInfoId, String state){
         Map<String,Object> result = new HashMap<String,Object>();
@@ -101,7 +101,7 @@ public class UserController {
             result = userService.editRepayState(installmentInfoId, state);
         }catch (Exception e){
             result.put("retCode","500");
-            result.put("retMsg","修改还款状态失败失败！");
+            result.put("retMsg","修改还款状态失败！");
         }
         return result;
     }
@@ -111,7 +111,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/queryUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryUser4app",method = RequestMethod.GET)
     @ResponseBody
     public User queryUser(String id) {
         return userService.queryUser(id);

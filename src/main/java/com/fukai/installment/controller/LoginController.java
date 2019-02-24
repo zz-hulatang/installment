@@ -4,6 +4,7 @@ import com.fukai.installment.bean.User;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,6 +28,27 @@ public class LoginController {
         User user = userService.findByMobilePhoneAndPassword(mobilePhone,password);
         Map<String,Object> objectMap = new HashMap<>();
         if(user != null){
+            if(!user.getName().equals("admin")){
+                objectMap.put("error","手机号或密码错误");
+            }else {
+                objectMap.put("success","success");
+                objectMap.put("user",user);
+            }
+
+        }else{
+
+        }
+        return objectMap;
+    }
+
+    @RequestMapping(value = "/login4app",method = RequestMethod.POST)
+    @ResponseBody
+    public Object login4App(@RequestBody Map<String, String> map){
+        String mobilePhone = map.get("mobilePhone");
+        String password = map.get("password");
+        User user = userService.findByMobilePhoneAndPassword(mobilePhone,password);
+        Map<String,Object> objectMap = new HashMap<>();
+        if(user != null){
             objectMap.put("success","success");
             objectMap.put("user",user);
         }else{
@@ -38,6 +60,11 @@ public class LoginController {
     @RequestMapping("/success")
     public String success(){
         return "success";
+    }
+    @RequestMapping("/deatil")
+    public String deatil(Model model,String id){
+        model.addAttribute("infoId",id);
+        return "article_detail";
     }
 
 }

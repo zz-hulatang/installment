@@ -3,6 +3,7 @@ package com.fukai.installment.bean;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -19,6 +20,9 @@ public class InstallmentInfoEntity {
     private double repayAmount;// 还款金额
     private int repayDate; // 还款期数
     private Date repayTime;// 还款时间
+
+    @Transient
+    private String repayTime1;
 
     public String getId() {
         return id;
@@ -68,4 +72,11 @@ public class InstallmentInfoEntity {
         this.id = id;
     }
 
+    public String getRepayTime1() {
+        return repayTime1;
+    }
+
+    public void setRepayTime1(String repayTime1) {
+        this.repayTime1 = repayTime1;
+    }
 }

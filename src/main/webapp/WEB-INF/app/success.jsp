@@ -99,6 +99,18 @@
 
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="create">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>手机号</th>
+                                                <th>身份证号</th>
+                                                <th>贷款本金</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody"></tbody>
+                                    </table>
                                 </div>
                                 <div class="tab-pane fade" id="assent">
                                 </div>
@@ -128,41 +140,43 @@
 <script>
     var page = 1;
     var orderBy = "createDate";
-    var sort = "desc";
     $(document).ready(function () {
         createDate();
     });
-    function showList(list,id) {
-        $("#"+id).html("");
+    function showList(list) {
+        $("#tbody").html("");
         if(list.length > 0){
-            var idIndex = 0;
             $.each(list,function (index,item) {
-                if(index == 0 || (index % 3) == 0){
-                    idIndex = index;
-                    $("#"+id).append("<div id=\""+id+""+idIndex+"\" class=\"row\"></div>");
-                }
-                $("#"+id+""+idIndex).append("<div class=\"col-md-4 col-sm-4\"><div class=\""+className()+"\"><div class=\"panel-heading\">" +
-                        "<span class=\"col-sm-8 span\"><a href=\"#\" title=\""+item.title+"\">"+item.title+"</a></span>" +
-                        "<span class=\"col-sm-4 span\" style=\"text-align: right\" title=\""+dateFormat(item.createDate)+"\">"+dateFormat(item.createDate)+"</span></div>" +
-                        "<div class=\"panel-body title\"><p>"+item.content+"</p></div><div class=\"panel-footer\">" +
-                        "<span class=\"col-sm-3 span\" title=\""+item.user.nickname+"\"><i class=\"fa fa-user\"></i>"+item.user.nickname+"</span>" +
-                        "<span class=\"col-sm-3 span\" title=\""+item.commentNum+"条评论\"><i class=\"fa fa-comments\"></i>"+item.commentNum+"条评论</span>" +
-                        "<span class=\"col-sm-3 span\" title=\""+item.againstNum+"人反对\"><i class=\"fa fa-frown-o\"></i>"+item.againstNum+"人反对</span>" +
-                        "<span class=\"col-sm-3 span\" title=\""+item.assentNum+"人支持\"><i class=\"fa fa-smile-o\"></i>"+item.assentNum+"人支持</span>");
+                $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.mobilePhone + "</td><td>" + item.idCard
+                    +"</td><td>" + item.installmentEntity.installmentAmount +"</td>" +
+                    "<td><a onclick=detailInfo(\""+item.installmentEntity.id+"\")>详情</a></td></tr>");
             });
         }else{
             $("#"+id).html("没有数据");
         }
     }
 
+    function detailInfo(id){
+        window.location.href = "${pageContext.request.contextPath}/deatil?id="+id;
+    }
+
+    var size = 20;
+
+    function totalPage(count){
+        if(count % size ==0){
+            return count/size;
+        }else{
+            return Math.ceil(count/size);
+        }
+    }
+
     function callback1(data) {
-        if(data.code){
-            var list = data.data.list;
-            showList(list,"create");
+        if(data.length > 0){
+            showList(data);
             $("#page").paging({
                 pageNo: page,
-                totalPage: data.data.pageCount,
-                totalSize: data.data.totalNum,
+                totalPage: totalPage(data[0].count),
+                totalSize: data[0].count,
                 callback: function(num) {
                     page = num;
                     createDate();
@@ -172,9 +186,10 @@
             $("body").html(data);
         }
     }
+
     function createDate() {
         orderBy = "createDate";
-        getRequest("${pageContext.request.contextPath}/article/list/"+page+"/"+orderBy+"/"+sort,callback1);
+        getRequest("${pageContext.request.contextPath}/user/queryUser?page="+page+"&size="+size,callback1);
     }
 </script>
 

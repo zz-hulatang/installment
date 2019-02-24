@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -106,6 +107,9 @@ public class UserServiceImpl implements UserService {
         List<User> users = userPage.getContent();
         for (User user:users) {
             InstallmentEntity installmentEntity = installmentRepository.findByUserId(user.getId());
+            if(installmentEntity == null){
+                installmentEntity = new InstallmentEntity();
+            }
             user.setInstallmentEntity(installmentEntity);
             user.setCount(count);
         }
@@ -119,11 +123,15 @@ public class UserServiceImpl implements UserService {
         Sort sort = new Sort(Sort.Direction.DESC,"repayTime");
         List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findAll(sort);
         ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         for (InstallmentInfoEntity info:infoEntities
              ) {
             Date date = new Date();
-            boolean flag = date.before(info.getRepayTime());
-            if (flag==true)resultList.add(info);
+            boolean flag = date.after(info.getRepayTime());
+            if (flag==true){
+                info.setRepayTime1(format.format(info.getRepayTime()));
+                resultList.add(info);
+            }
         }
         return resultList;
     }
