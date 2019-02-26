@@ -21,4 +21,8 @@ public interface UserService {
     Map<String,Object> editRepayState(String installmentInfoId,String state) throws Exception;
     InstallmentEntity selectInstallmentListByUserId(String userId);
     User queryUser(String id);
+
+    User findByMobile(String mobilePhone);
+
+    InstallmentEntity findOne(String id);
 }

@@ -56,9 +56,7 @@
 						<%--<div class="form-group">--%>
 							<%--<label for="remember"><input type="checkbox" id="remember"> Remember Me</label>--%>
 						<%--</div>--%>
-						<div class="form-group">
-							<p>没有账号? <a href="sign-up.jsp">注 册</a></p>
-						</div>
+
 						<div class="form-group">
 							<input type="button" value="登 录" class="btn btn-primary" onclick="login()">
 						</div>
@@ -96,7 +94,7 @@
 		function callback(data) {
 			if (data.success != null) {
 				localStorage.setItem("userName",data.user.name);
-				localStorage.setItem("userName",data.user.id)
+				localStorage.setItem("userId",data.user.id)
 				window.location.href = "${pageContext.request.contextPath}/success";
 			} else{
 				msg(data.error);

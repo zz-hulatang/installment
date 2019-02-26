@@ -6,75 +6,21 @@
     <jsp:include page="../../head.jsp"/>
 </head>
 
+<style type="text/css">
+    .a1{
+        color: #5cb85c;
+    }
+    .a2{
+        color: #e50011;
+    }
+</style>
+
 <body>
 <div id="wrapper">
     <input id="infoId" type="hidden" value="${infoId}">
-    <nav class="navbar navbar-default top-navbar" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="${pageContext.request.contextPath}/success"><img src="${pageContext.request.contextPath}/static/assets/img/logo.png" alt=""></a>
-
-            <div id="sideNav">
-                <i class="fa fa-bars icon"></i>
-            </div>
-        </div>
-
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown"  style="margin-right: 45px">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a onclick="logout()"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-    </nav>
 
     <!--/. NAV TOP  -->
-    <nav class="navbar-default navbar-side" role="navigation" id="menuList">
-        <div class="sidebar-collapse">
-            <ul class="nav" id="main-menu">
-
-                <li>
-                    <a class="active-menu" href="${pageContext.request.contextPath}/success"><i class="fa fa-list"></i> 用户管理</a>
-                </li>
-
-                <%--<li>--%>
-                <%--<a href="#"><i class="fa fa-file-text"></i> 我的文章<span class="fa arrow"></span></a>--%>
-                <%--<ul class="nav nav-second-level">--%>
-                <%--<li>--%>
-                <%--<a href="${pageContext.request.contextPath}/url/myArticle">文章列表</a>--%>
-                <%--</li>--%>
-                <%--<li>--%>
-                <%--<a href="${pageContext.request.contextPath}/url/op/add">添加文章</a>--%>
-                <%--</li>--%>
-                <%--</ul>--%>
-                <%--</li>--%>
-                <li>
-                    <a href="#"><i class="fa fa-cogs"></i> 设置<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="chart.html">我的资料</a>
-                        </li>
-                        <li>
-                            <a href="morris-chart.html">修改密码</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-
-    </nav>
+    <jsp:include page="../../nav.jsp"/>
 
     <div id="page-wrapper">
         <div class="header">
@@ -102,7 +48,6 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>还款期数</th>
                                             <th>还款金额</th>
                                             <th>还款日期</th>
@@ -140,18 +85,22 @@
 <script>
 
     $(document).ready(function () {
+        if($("#userId").val() == ''){
+            window.location.href='${pageContext.request.contextPath}/index.jsp';
+        }
         createDate($('#infoId').val());
     });
-    function showList(list) {
+    function showList(data) {
+        var list = data.data;
         $("#tbody").html("");
         if(list.length > 0){
             $.each(list,function (index,item) {
-                var html = "<tr><th>" + (index+1) + "</th><td>" + item.repayDate + "</td><td>" + item.repayAmount
+                var html = "<tr><td>" + item.repayDate + "/" + data.count + "</td><td>" + item.repayAmount
                     +"</td><td>" + item.repayTime1 +"</td>"
                 if(item.repayState == 1){
-                    html = html + "<td>已还款</td></tr>";
+                    html = html + "<td><a class='a1' onclick=editState(\""+item.id+"\",0)>已还款</a></td></tr>";
                 }else{
-                    html = html + "<td><a onclick=editState(\""+item.id+"\")>未还款</a></td></tr>";
+                    html = html + "<td><a class='a2' onclick=editState(\""+item.id+"\",1)>未还款</a></td></tr>";
                 }
                 $("#tbody").append(html);
             });
@@ -160,8 +109,8 @@
         }
     }
 
-    function editState(id){
-        getRequest("${pageContext.request.contextPath}/user/editState?installmentInfoId="+id+"&state=1",callback2);
+    function editState(id,state){
+        getRequest("${pageContext.request.contextPath}/user/editState?installmentInfoId="+id+"&state="+state,callback2);
     }
 
     function callback2(data) {

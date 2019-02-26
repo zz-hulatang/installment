@@ -35,13 +35,11 @@ public class UserServiceImpl implements UserService {
     private InstallmentInfoRepository installmentInfoRepository;
 
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
+    @Transactional
     // 添加用户
     public Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception{
             Map<String,Object> result = new HashMap<String,Object>();
-            user.setUserType("0");
             userRepository.save(user);// 保存用户信息
-            installmentEntity.setUserId(user.getId());
             installmentRepository.save(installmentEntity);// 保存贷款信息主表数据
 
             //从贷款主表中获取本金、利率、贷款期数等数据经过计算生成贷款明细数据
@@ -122,14 +120,13 @@ public class UserServiceImpl implements UserService {
     @Override
     // 查询贷款明细数据
     public List<InstallmentInfoEntity> selectInstallmentInfoList(String installId) {
-        Sort sort = new Sort(Sort.Direction.DESC,"repayTime");
-        List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findAll(sort);
+        List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
         ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         for (InstallmentInfoEntity info:infoEntities
              ) {
             Date date = new Date();
-            boolean flag = date.after(info.getRepayTime());
+            boolean flag = date.before(info.getRepayTime());
             if (flag==true){
                 info.setRepayTime1(format.format(info.getRepayTime()));
                 resultList.add(info);
@@ -184,5 +181,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findOne(id);
     }
 
+    @Override
+    public User findByMobile(String mobilePhone) {
+        return userRepository.findByMobilePhone(mobilePhone);
+    }
+
+    @Override
+    public InstallmentEntity findOne(String id){
+        return installmentRepository.findOne(id);
+    }
 
 }

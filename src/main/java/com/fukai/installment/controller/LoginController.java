@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public Object login(@RequestBody Map<String, String> map){
+    public Object login(HttpServletRequest request, @RequestBody Map<String, String> map){
         String mobilePhone = map.get("mobilePhone");
         String password = map.get("password");
         User user = userService.findByMobilePhoneAndPassword(mobilePhone,password);
@@ -33,10 +35,12 @@ public class LoginController {
             }else {
                 objectMap.put("success","success");
                 objectMap.put("user",user);
+                HttpSession session = request.getSession();
+                session.setAttribute("userId",user.getId());
             }
 
         }else{
-
+            objectMap.put("error","手机号或密码错误");
         }
         return objectMap;
     }
@@ -61,10 +65,22 @@ public class LoginController {
     public String success(){
         return "success";
     }
+
     @RequestMapping("/deatil")
     public String deatil(Model model,String id){
         model.addAttribute("infoId",id);
         return "article_detail";
+    }
+
+    @RequestMapping("/addUser")
+    public String addUser(){
+        return "addUser";
+    }
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("userId");
+        return "redirect:/success";
     }
 
 }

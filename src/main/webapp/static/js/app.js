@@ -12,7 +12,6 @@ function ajaxRequest(url,method,data,callback) {
         data:JSON.stringify(data),
         dataType:"json",
         beforeSend:function (xhr){
-            xhr.setRequestHeader("token",localStorage.getItem("token"));
             xhr.setRequestHeader("Content-Type","application/json;charset=UTF-8");
             layer.load();
         },

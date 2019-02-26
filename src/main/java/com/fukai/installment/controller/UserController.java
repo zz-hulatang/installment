@@ -3,16 +3,14 @@ package com.fukai.installment.controller;
 import com.fukai.installment.bean.InstallmentEntity;
 import com.fukai.installment.bean.InstallmentInfoEntity;
 import com.fukai.installment.bean.User;
+import com.fukai.installment.bean.pojo.User4Creat;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author: luoxiaozhu
@@ -27,20 +25,44 @@ public class UserController {
 
     /**
      * 添加用户
-     * @param user
-     * @param installmentEntity
+     * @param bean
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/save",method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public Map<String, Object> addUser(@RequestBody User user,@RequestBody InstallmentEntity installmentEntity) throws Exception{
+    public Map<String, Object> addUser(@RequestBody User4Creat bean) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
-        String id = UUID.randomUUID().toString();
-        user.setId(id);
+
+        User user1 = userService.findByMobile(bean.getMobilePhone());
+        if(user1 != null){
+            result.put("retCode","500");
+            result.put("retMsg","该手机号已经存在！");
+            return result;
+        }
+
+        String userId = UUID.randomUUID().toString();
+        User user = new User();
+        user.setId(userId);
+        user.setPassword("0000");
+        user.setName(bean.getName());
+        user.setUserType("0");
+        user.setCreateTime(new Date());
+        user.setIdCard(bean.getIdCard());
+        user.setMobilePhone(bean.getMobilePhone());
+
+        InstallmentEntity installmentEntity = new InstallmentEntity();
         String id1 = UUID.randomUUID().toString();
         installmentEntity.setId(id1);
+        installmentEntity.setUserId(userId);
+        installmentEntity.setInstallmentAmount(bean.getInstallmentAmount());
+        installmentEntity.setInterestRate(bean.getInterestRate());
+        installmentEntity.setRepayNumber(bean.getRepayNumber());
+        installmentEntity.setRepayCardNumber(bean.getRepayCardNumber());
+        installmentEntity.setRepayDate(bean.getRepayDate());
+        installmentEntity.setProfileNumber(bean.getProfileNumber());
+        installmentEntity.setRepayType(bean.getRepayType());
         try {
             result = userService.save(user, installmentEntity);
         }catch (Exception e){
@@ -70,9 +92,13 @@ public class UserController {
      */
     @RequestMapping(value = "/queryInstallmentInfo",method = RequestMethod.GET)
     @ResponseBody
-    public List<InstallmentInfoEntity> queryInstallmentList(String installId) throws Exception{
+    public Map<String,Object> queryInstallmentList(String installId) throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        InstallmentEntity installmentEntity = userService.findOne(installId);
+        map.put("count",installmentEntity.getRepayNumber());
         List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList(installId);
-        return infoList;
+        map.put("data",infoList);
+        return map;
     }
 
     /**

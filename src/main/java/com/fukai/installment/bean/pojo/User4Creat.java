@@ -1,20 +1,15 @@
-package com.fukai.installment.bean;
+package com.fukai.installment.bean.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @Author: niul
- * @Date: 2019-02-23
+ * @Author: luoxiaozhu
+ * @Date: 2019-02-25 19:58
  */
-@Entity
-@Table(name = "installment")
-public class InstallmentEntity {
-    @Id
-    private String id;
-    private String userId;
+public class User4Creat {
+    private String idCard;
+    private String name;
+    private String mobilePhone;
     private double installmentAmount; // 贷款本金
     private double interestRate;// 执行利率
     private int repayNumber; // 还款期数
@@ -23,20 +18,28 @@ public class InstallmentEntity {
     private String profileNumber; // 档案号
     private String repayType; // 还款方式
 
-    public String getId() {
-        return id;
+    public String getIdCard() {
+        return idCard;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public double getInstallmentAmount() {
