@@ -7,7 +7,7 @@ package com.fukai.installment.bean.pojo;
 public class UserList {
     private String mobilePhone;
     private String idCard;
-    private String installmentAmount;
+    private double installmentAmount;
     private String installmentEntityId;
 
     public String getMobilePhone() {
@@ -26,11 +26,11 @@ public class UserList {
         this.idCard = idCard;
     }
 
-    public String getInstallmentAmount() {
+    public double getInstallmentAmount() {
         return installmentAmount;
     }
 
-    public void setInstallmentAmount(String installmentAmount) {
+    public void setInstallmentAmount(double installmentAmount) {
         this.installmentAmount = installmentAmount;
     }
 

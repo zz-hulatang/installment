@@ -34,6 +34,12 @@
                         <div class="panel-body">
 
                             <div class="tab-content">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" id="keyWord" class="form-control" id="exampleInputEmail3" placeholder="请输入用户信息">
+                                    </div>
+                                    <button type="button" id="search" class="btn btn-default" onclick="createDate()">搜 索</button>
+                                </form>
                                 <div class="tab-pane fade active in" id="create">
                                     <table class="table">
                                         <thead>
@@ -75,7 +81,6 @@
 
 <script>
     var page = 1;
-    var orderBy = "createDate";
     $(document).ready(function () {
         if($("#userId").val() == ''){
             window.location.href='${pageContext.request.contextPath}/index.jsp';
@@ -128,9 +133,12 @@
     }
 
     function createDate() {
-        orderBy = "createDate";
-        getRequest("${pageContext.request.contextPath}/user/queryUser?page="+page+"&size="+size,callback1);
+        var keyWord = $("#keyWord").val();
+        getRequest("${pageContext.request.contextPath}/user/queryUser?page="+page+"&size="+size+"&keyWord="+keyWord,callback1);
     }
+
+
+
 </script>
 
 </body>
