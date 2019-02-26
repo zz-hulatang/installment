@@ -16,7 +16,7 @@ public class User4Creat {
     private String repayCardNumber; // 还款卡号
     private Date repayDate;// 首次还款日期
     private String profileNumber; // 档案号
-    private String repayType; // 还款方式
+    private int repayType; // 还款方式
 
     public String getIdCard() {
         return idCard;
@@ -90,11 +90,11 @@ public class User4Creat {
         this.profileNumber = profileNumber;
     }
 
-    public String getRepayType() {
+    public int getRepayType() {
         return repayType;
     }
 
-    public void setRepayType(String repayType) {
+    public void setRepayType(int repayType) {
         this.repayType = repayType;
     }
 }
