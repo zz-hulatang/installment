@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
             }else{
                 rate = new BigDecimal(Double.toString(interestRate));
             }
-            BigDecimal amountAll = amount.multiply(rate);//总金额
+            BigDecimal amountAll = amount.multiply(rate).add(amount);//总金额
             double averageAmount = amountAll.divide(rate, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
             //定义日期实例
