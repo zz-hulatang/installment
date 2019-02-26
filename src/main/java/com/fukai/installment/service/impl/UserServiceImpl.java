@@ -3,9 +3,11 @@ package com.fukai.installment.service.impl;
 import com.fukai.installment.bean.InstallmentEntity;
 import com.fukai.installment.bean.InstallmentInfoEntity;
 import com.fukai.installment.bean.User;
+import com.fukai.installment.bean.pojo.UserList;
 import com.fukai.installment.dao.InstallmentInfoRepository;
 import com.fukai.installment.dao.InstallmentRepository;
 import com.fukai.installment.dao.UserRepository;
+import com.fukai.installment.dao.mapper.UserMapper;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +35,9 @@ public class UserServiceImpl implements UserService {
     private InstallmentRepository installmentRepository;
     @Autowired
     private InstallmentInfoRepository installmentInfoRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     @Transactional
@@ -97,23 +102,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //查询用户列表
-    public List<User> selectUserList(int page,int size) {
+    public List<UserList> selectUserList(String keyWord, Pageable request) {
 
         //查询数据库中user总数
-        long count = userRepository.count();
+//        long count = userRepository.count();
 //        PageRequest request = PageRequest.of(page, size);
-        PageRequest request = new PageRequest(page,size);
-        Page<User> userPage = userRepository.findAll(request);
-        List<User> users = userPage.getContent();
-        for (User user:users) {
-            InstallmentEntity installmentEntity = installmentRepository.findByUserId(user.getId());
-            if(installmentEntity == null){
-                installmentEntity = new InstallmentEntity();
-            }
-            user.setInstallmentEntity(installmentEntity);
-            user.setCount(count);
-        }
-        return users;
+        Map<String,Object> map = new HashMap<>();
+        map.put("keyWord",keyWord);
+        map.put("page",request.getPageNumber());
+        map.put("size",request.getPageSize());
+        List<UserList> userPage = userMapper.getUserList(map);
+//        List<User> users = userPage.getContent();
+//        for (User user:users) {
+//            InstallmentEntity installmentEntity = installmentRepository.findByUserId(user.getId());
+//            if(installmentEntity == null){
+//                installmentEntity = new InstallmentEntity();
+//            }
+//            user.setInstallmentEntity(installmentEntity);
+////            user.setCount(count);
+//        }
+        return userPage;
 
     }
 
@@ -122,7 +130,7 @@ public class UserServiceImpl implements UserService {
     public List<InstallmentInfoEntity> selectInstallmentInfoList(String installId) {
         List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
         ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         for (InstallmentInfoEntity info:infoEntities
              ) {
             Date date = new Date();
@@ -189,6 +197,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public InstallmentEntity findOne(String id){
         return installmentRepository.findOne(id);
+    }
+
+    @Override
+    public int selectUserListCount(String keyWord) {
+        return userMapper.selectUserListCount(keyWord);
     }
 
 }

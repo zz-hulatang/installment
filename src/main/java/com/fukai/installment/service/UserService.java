@@ -3,6 +3,10 @@ package com.fukai.installment.service;
 import com.fukai.installment.bean.InstallmentEntity;
 import com.fukai.installment.bean.InstallmentInfoEntity;
 import com.fukai.installment.bean.User;
+import com.fukai.installment.bean.pojo.UserList;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +18,7 @@ import java.util.Map;
 public interface UserService {
     Map<String,Object> save(User user, InstallmentEntity installmentEntity) throws Exception;
     void deleteUser(User user);
-    List<User> selectUserList(int page,int size);
+    List<UserList> selectUserList(String keyWord, Pageable request);
     List<InstallmentInfoEntity> selectInstallmentInfoList(String installId);
 
     User findByMobilePhoneAndPassword(String mobilePhone, String password);
@@ -25,4 +29,6 @@ public interface UserService {
     User findByMobile(String mobilePhone);
 
     InstallmentEntity findOne(String id);
+
+    int selectUserListCount(String keyWord);
 }

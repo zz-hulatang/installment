@@ -156,7 +156,7 @@
                 </div>
             </div>
 
-            <footer><p>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">七楼的南瓜饼子店</a></p>
+            <footer><p>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">富凯分期</a></p>
 
 
             </footer>

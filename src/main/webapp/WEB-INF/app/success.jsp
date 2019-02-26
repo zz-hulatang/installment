@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-            <footer><p>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">七楼的南瓜饼子店</a></p>
+            <footer><p>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.i757.com/">富凯分期</a></p>
 
 
             </footer>
@@ -79,19 +79,20 @@
     $(document).ready(function () {
         if($("#userId").val() == ''){
             window.location.href='${pageContext.request.contextPath}/index.jsp';
+        }else {
+            createDate();
         }
-        createDate();
     });
     function showList(list) {
         $("#tbody").html("");
         if(list.length > 0){
             $.each(list,function (index,item) {
                 $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.mobilePhone + "</td><td>" + item.idCard
-                    +"</td><td>" + item.installmentEntity.installmentAmount +"</td>" +
-                    "<td><a onclick=detailInfo(\""+item.installmentEntity.id+"\")>详情</a></td></tr>");
+                    +"</td><td>" + item.installmentAmount +"</td>" +
+                    "<td><a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a></td></tr>");
             });
         }else{
-            $("#"+id).html("没有数据");
+            $("#tbody").html("没有数据");
         }
     }
 
@@ -110,19 +111,19 @@
     }
 
     function callback1(data) {
-        if(data.length > 0){
-            showList(data);
+        if(data.userList.length > 0){
+            showList(data.userList);
             $("#page").paging({
                 pageNo: page,
-                totalPage: totalPage(data[0].count),
-                totalSize: data[0].count,
+                totalPage: totalPage(data.count),
+                totalSize: data.count,
                 callback: function(num) {
                     page = num;
                     createDate();
                 }
             });
         }else{
-            $("body").html(data);
+            $("#tbody").html("没有数据");
         }
     }
 

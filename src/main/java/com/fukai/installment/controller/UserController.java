@@ -4,8 +4,12 @@ import com.fukai.installment.bean.InstallmentEntity;
 import com.fukai.installment.bean.InstallmentInfoEntity;
 import com.fukai.installment.bean.User;
 import com.fukai.installment.bean.pojo.User4Creat;
+import com.fukai.installment.bean.pojo.UserList;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -79,9 +83,14 @@ public class UserController {
      */
     @RequestMapping(value = "/queryUser",method = RequestMethod.GET)
     @ResponseBody
-    public List<User> queryUserList(int page,int size) throws Exception{
-        List<User> userList = userService.selectUserList(page-1,size);
-        return userList;
+    public Map<String,Object> queryUserList(String keyWord, int page, int size) throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        int count = userService.selectUserListCount(keyWord);
+        map.put("count",count);
+        Pageable request = new PageRequest(page-1,size);
+        List<UserList> userList = userService.selectUserList(keyWord,request);
+        map.put("userList",userList);
+        return map;
     }
 
     /**
