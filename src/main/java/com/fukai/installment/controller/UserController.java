@@ -94,7 +94,7 @@ public class UserController {
     }
 
     /**
-     * 查询还款详情
+     * 查询还款详情app
      * @param installId
      * @return
      * @throws Exception
@@ -106,6 +106,23 @@ public class UserController {
         InstallmentEntity installmentEntity = userService.findOne(installId);
         map.put("count",installmentEntity.getRepayNumber());
         List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList(installId);
+        map.put("data",infoList);
+        return map;
+    }
+
+    /**
+     * 查询还款详情app
+     * @param installId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/queryInstallmentInfo2",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> queryInstallmentList2(String installId) throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        InstallmentEntity installmentEntity = userService.findOne(installId);
+        map.put("count",installmentEntity.getRepayNumber());
+        List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList2(installId);
         map.put("data",infoList);
         return map;
     }

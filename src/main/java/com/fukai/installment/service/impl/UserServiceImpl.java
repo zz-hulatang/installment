@@ -52,7 +52,9 @@ public class UserServiceImpl implements UserService {
             double interestRate = installmentEntity.getInterestRate();//利率
             int repayNumber = installmentEntity.getRepayNumber();//还款总期数
             Date repayDate = installmentEntity.getRepayDate();//首次还款日期
-            if (repayNumber==0) repayNumber = 36;
+            if (repayNumber==0) {
+                repayNumber = 36;
+            }
             BigDecimal amount;
             BigDecimal rate;
             //计算每期还款额
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 rate = new BigDecimal(Double.toString(interestRate));
             }
             BigDecimal amountAll = amount.multiply(rate).add(amount);//总金额
-            double averageAmount = amountAll.divide(rate, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            double averageAmount = amountAll.divide(new BigDecimal(repayNumber), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
             //定义日期实例
         Calendar data = Calendar.getInstance();
@@ -131,14 +133,26 @@ public class UserServiceImpl implements UserService {
         List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
         ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        for (InstallmentInfoEntity info:infoEntities
-             ) {
+        for (InstallmentInfoEntity info:infoEntities) {
             Date date = new Date();
-            boolean flag = date.before(info.getRepayTime());
+            boolean flag = date.after(info.getRepayTime());
             if (flag==true){
                 info.setRepayTime1(format.format(info.getRepayTime()));
                 resultList.add(info);
             }
+        }
+        return resultList;
+    }
+
+    @Override
+    // 查询贷款明细数据
+    public List<InstallmentInfoEntity> selectInstallmentInfoList2(String installId) {
+        List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
+        ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        for (InstallmentInfoEntity info:infoEntities) {
+            info.setRepayTime1(format.format(info.getRepayTime()));
+            resultList.add(info);
         }
         return resultList;
     }
