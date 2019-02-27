@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a href="${pageContext.request.contextPath}/success"><img src="${pageContext.request.contextPath}/static/assets/img/logo.png" alt=""></a>
+        <a href="${pageContext.request.contextPath}/success"></a>
 
         <div id="sideNav">
             <i class="fa fa-bars icon"></i>
