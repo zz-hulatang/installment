@@ -218,4 +218,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectUserListCount(keyWord);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
+    public void deleteInfo(String infoId) {
+        installmentInfoRepository.deleteByInstallId(infoId);
+        installmentRepository.delete(infoId);
+    }
+
+    @Override
+    public void updatePass(String userId, String newPass) {
+        userRepository.updatePass(userId,newPass);
+    }
+
 }

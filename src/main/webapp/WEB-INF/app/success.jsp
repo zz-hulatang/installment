@@ -94,7 +94,7 @@
             $.each(list,function (index,item) {
                 $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.mobilePhone + "</td><td>" + item.idCard
                     +"</td><td>" + item.installmentAmount +"</td>" +
-                    "<td><a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a></td></tr>");
+                    "<td><a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a>|<a onclick=deleteInfo(\""+item.installmentEntityId+"\")>删除</a></td></tr>");
             });
         }else{
             $("#tbody").html("没有数据");
@@ -103,6 +103,23 @@
 
     function detailInfo(id){
         window.location.href = "${pageContext.request.contextPath}/deatil?id="+id;
+    }
+
+    function callbackDel(data){
+        if(data.retCode == 200){
+            msg(data.retMsg);
+            createDate();
+        }else{
+            msg(data.retMsg);
+        }
+    }
+
+    function deleteInfo(id){
+        layer.confirm('确定要删除这条数据吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            getRequest("${pageContext.request.contextPath}/user/deleteInfo?id="+id,callbackDel);
+        });
     }
 
     var size = 20;

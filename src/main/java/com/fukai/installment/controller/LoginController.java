@@ -36,6 +36,7 @@ public class LoginController {
                 objectMap.put("success","success");
                 objectMap.put("user",user);
                 HttpSession session = request.getSession();
+                session.setMaxInactiveInterval(8*60*60);
                 session.setAttribute("userId",user.getId());
             }
 
@@ -81,6 +82,11 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.removeAttribute("userId");
         return "redirect:/success";
+    }
+
+    @RequestMapping("/modify_password")
+    public String modifyPassword(){
+        return "modify_password";
     }
 
 }

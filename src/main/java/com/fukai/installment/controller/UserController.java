@@ -6,6 +6,7 @@ import com.fukai.installment.bean.User;
 import com.fukai.installment.bean.pojo.User4Creat;
 import com.fukai.installment.bean.pojo.UserList;
 import com.fukai.installment.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -167,6 +168,44 @@ public class UserController {
     @ResponseBody
     public User queryUser(String id) {
         return userService.queryUser(id);
+    }
+
+    @RequestMapping(value = "/deleteInfo",method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Map<String,String> deleteInfo(String id){
+        Map<String,String> result = new HashMap<>();
+        try{
+            userService.deleteInfo(id);
+            result.put("retCode","200");
+            result.put("retMsg","删除成功！");
+        }catch (Exception e){
+            result.put("retCode","500");
+            result.put("retMsg","删除失败！");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/password/{userId}",method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Map<String,String> deleteInfo(@PathVariable String userId,@RequestBody Map<String,String> map){
+        Map<String,String> result = new HashMap<>();
+        User user = userService.queryUser(userId);
+        if(!StringUtils.equals(user.getPassword(),map.get("oldPass"))){
+            result.put("retCode","500");
+            result.put("retMsg","修改密码失败，旧密码输入错误！");
+            return result;
+        }
+        try{
+            userService.updatePass(userId,map.get("newPass"));
+            result.put("retCode","200");
+            result.put("retMsg","修改密码成功！");
+        }catch (Exception e){
+            result.put("retCode","500");
+            result.put("retMsg","修改密码失败！");
+        }
+        return result;
     }
 
 }

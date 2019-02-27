@@ -32,4 +32,8 @@ public interface UserService {
     InstallmentEntity findOne(String id);
 
     int selectUserListCount(String keyWord);
+
+    void deleteInfo(String infoId);
+
+    void updatePass(String userId, String newPass);
 }

@@ -58,7 +58,7 @@
                 <a href="#"><i class="fa fa-cogs"></i> 设置<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="morris-chart.html">修改密码</a>
+                        <a href="${pageContext.request.contextPath}/modify_password">修改密码</a>
                     </li>
                 </ul>
             </li>
