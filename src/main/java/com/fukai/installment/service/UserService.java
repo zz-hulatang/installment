@@ -38,4 +38,6 @@ public interface UserService {
     void updatePass(String userId, String newPass);
 
     Map<String, Object> save2(User user, InstallmentEntity installmentEntity);
+
+    void repayStateJob();
 }

@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 String id = UUID.randomUUID().toString();
                 installmentInfoEntity.setId(id);
                 installmentInfoEntity.setInstallId(installmentEntity.getId());
-                installmentInfoEntity.setRepayState("0");//默认已还款
+                installmentInfoEntity.setRepayState("0");//默认未还款
                 installmentInfoEntity.setRepayDate(i+1);
                 installmentInfoEntity.setRepayAmount(averageAmount);
                 if (i==0){
@@ -244,6 +244,11 @@ public class UserServiceImpl implements UserService {
         result.put("retCode","200");
         result.put("retMsg", "修改用户信息成功！");
         return result;
+    }
+
+    @Override
+    public void repayStateJob() {
+        installmentInfoRepository.repayStateJob();
     }
 
 }

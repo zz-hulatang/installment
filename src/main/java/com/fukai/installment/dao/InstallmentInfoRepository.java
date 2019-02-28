@@ -21,4 +21,9 @@ public interface InstallmentInfoRepository extends JpaRepository<InstallmentInfo
     @Transactional
     @Query(value = "delete from installmentInfo where installId = ?1",nativeQuery = true)
     void deleteByInstallId(String infoId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update installmentInfo set repayState = 1 where repayState = 0 and repayTime < SYSDATE()",nativeQuery = true)
+    void repayStateJob();
 }
