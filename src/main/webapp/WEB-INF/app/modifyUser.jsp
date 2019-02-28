@@ -20,9 +20,10 @@
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/success">主页</a></li>
                 <li><a href="${pageContext.request.contextPath}/success">用户管理</a></li>
-                <li class="active">添加用户</li>
+                <li class="active">修改用户</li>
             </ol>
-
+            <input type="hidden" id="userId2" value="${user.id}">
+            <input type="hidden" id="installmentEntityId" value="${installmentEntity.id}">
         </div>
         <div id="page-inner">
 
@@ -39,31 +40,31 @@
                                         <div class="form-group">
                                             <label for="mobilePhone" class="col-sm-2 control-label">手机号</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="mobilePhone" name="mobilePhone" placeholder="手机号">
+                                                <input type="text" class="form-control" id="mobilePhone" name="mobilePhone" placeholder="手机号" value="${user.mobilePhone}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="idCard" class="col-sm-2 control-label">身份证</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="idCard" name="idCard" placeholder="身份证">
+                                                <input type="text" class="form-control" id="idCard" name="idCard" placeholder="身份证" value="${user.idCard}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="name" class="col-sm-2 control-label">姓名</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="姓名" value="${user.name}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="interestRate" class="col-sm-2 control-label">执行利率</label>
                                             <div class="col-sm-8">
-                                                <input type="number" class="form-control" id="interestRate" name="interestRate" min="0" value="0">
+                                                <input type="number" class="form-control" id="interestRate" name="interestRate" min="0" value="${installmentEntity.interestRate}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="installmentAmount" class="col-sm-2 control-label">贷款本金</label>
                                             <div class="col-sm-8">
-                                                <input type="number" class="form-control" id="installmentAmount" name="installmentAmount" min="0" value="0">
+                                                <input type="number" class="form-control" id="installmentAmount" name="installmentAmount" min="0" value="${installmentEntity.installmentAmount}">
                                             </div>
                                         </div>
                                         <div class="form-group" hidden="true">
@@ -74,8 +75,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="repayNumber" class="col-sm-2 control-label">还款期数</label>
+                                            <input type="hidden" id="repayNumberText" value="${installmentEntity.repayNumber}">
                                             <div class="col-sm-4">
-                                                <select id="repayNumber" name="repayNumber" class="selectpicker show-tick form-control" >
+                                                <select id="repayNumber" name="repayNumber" class="selectpicker show-tick form-control">
                                                     　　<option value="1">1</option>
                                                     　　<option value="2">2</option>
                                                     　　<option value="3">3</option>
@@ -85,52 +87,52 @@
                                                     　　<option value="7">7</option>
                                                     　　<option value="8">8</option>
                                                     　　<option value="9">9</option>
-                                                    　　<option value="10">10</option>
-                                                    　　<option value="11">11</option>
-                                                    　　<option value="12">12</option>
-                                                    　　<option value="13">13</option>
-                                                    　　<option value="14">14</option>
-                                                    　　<option value="15">15</option>
-                                                    　　<option value="16">16</option>
-                                                    　　<option value="17">17</option>
-                                                    　　<option value="18">18</option>
-                                                    　　<option value="19">19</option>
-                                                    　　<option value="20">20</option>
-                                                    　　<option value="21">21</option>
-                                                    　　<option value="22">22</option>
-                                                    　　<option value="23">23</option>
-                                                    　　<option value="24">24</option>
-                                                    　　<option value="25">25</option>
-                                                    　　<option value="26">26</option>
-                                                    　　<option value="27">27</option>
-                                                    　　<option value="28">28</option>
-                                                    　　<option value="29">29</option>
-                                                    　　<option value="30">30</option>
-                                                    　　<option value="31">31</option>
-                                                    　　<option value="32">32</option>
-                                                    　　<option value="33">33</option>
-                                                    　　<option value="34">34</option>
-                                                    　　<option value="35">35</option>
-                                                    　　<option value="36" selected>36</option>
+                                                    　　<option  value="10">10</option>
+                                                    　　<option  value="11">11</option>
+                                                    　　<option  value="12">12</option>
+                                                    　　<option  value="13">13</option>
+                                                    　　<option  value="14">14</option>
+                                                    　　<option  value="15">15</option>
+                                                    　　<option  value="16">16</option>
+                                                    　　<option  value="17">17</option>
+                                                    　　<option  value="18">18</option>
+                                                    　　<option  value="19">19</option>
+                                                    　　<option  value="20">20</option>
+                                                    　　<option  value="21">21</option>
+                                                    　　<option  value="22">22</option>
+                                                    　　<option  value="23">23</option>
+                                                    　　<option  value="24">24</option>
+                                                    　　<option  value="25">25</option>
+                                                    　　<option  value="26">26</option>
+                                                    　　<option  value="27">27</option>
+                                                    　　<option  value="28">28</option>
+                                                    　　<option  value="29">29</option>
+                                                    　　<option  value="30">30</option>
+                                                    　　<option  value="31">31</option>
+                                                    　　<option  value="32">32</option>
+                                                    　　<option  value="33">33</option>
+                                                    　　<option  value="34">34</option>
+                                                    　　<option  value="35">35</option>
+                                                    　　<option  value="36">36</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="repayCardNumber" class="col-sm-2 control-label">还款卡号</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="repayCardNumber" name="repayCardNumber" placeholder="还款卡号">
+                                                <input type="text" class="form-control" id="repayCardNumber" name="repayCardNumber" placeholder="还款卡号" value="${installmentEntity.repayCardNumber}">
                                             </div>
                                         </div>
                                         <div class="form-group" >
                                             <label for="repayDate" class="col-sm-2 control-label">首次还款日期</label>
                                             <div class=" col-sm-4">
-                                                <input type="text" class="form-control" readonly id="repayDate" name="repayDate" placeholder="首次还款日期">
+                                                <input type="text" class="form-control" readonly id="repayDate" name="repayDate" placeholder="首次还款日期" value="${installmentEntity.repayDate1}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="profileNumber" class="col-sm-2 control-label">档案号</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="profileNumber" name="profileNumber" placeholder="档案号">
+                                                <input type="text" class="form-control" id="profileNumber" name="profileNumber" placeholder="档案号" value="${installmentEntity.profileNumber}">
                                             </div>
                                         </div>
 
@@ -174,6 +176,7 @@
         if($("#userId").val() == ''){
             window.location.href='${pageContext.request.contextPath}/index.jsp';
         }else{
+            $('#repayNumber').selectpicker('val',$('#repayNumberText').val());
             $("#repayDate").datetimepicker({
                 format: 'yyyy-mm-dd',
                 language: 'zh-CN',
@@ -185,6 +188,7 @@
                 minView: 2,
                 forceParse: 0
             });
+
         }
     });
 
@@ -237,7 +241,10 @@
         var profileNumber = $("#profileNumber").val();
         if(!validInput(profileNumber,"profileNumber")) return;
 
-        postRequest("${pageContext.request.contextPath}/user/save",form2JsonString("form"),callback);
+        var data = form2JsonString("form");
+        data["userId"]=$('#userId2').val();
+        data["installmentEntityId"]=$('#installmentEntityId').val();
+        postRequest("${pageContext.request.contextPath}/user/edit",data,callback);
     }
 </script>
 

@@ -17,6 +17,8 @@ public class User4Creat {
     private Date repayDate;// 首次还款日期
     private String profileNumber; // 档案号
     private int repayType; // 还款方式
+    private String userId;
+    private String installmentEntityId;
 
     public String getIdCard() {
         return idCard;
@@ -96,5 +98,21 @@ public class User4Creat {
 
     public void setRepayType(int repayType) {
         this.repayType = repayType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getInstallmentEntityId() {
+        return installmentEntityId;
+    }
+
+    public void setInstallmentEntityId(String installmentEntityId) {
+        this.installmentEntityId = installmentEntityId;
     }
 }

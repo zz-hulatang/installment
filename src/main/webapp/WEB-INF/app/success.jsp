@@ -97,7 +97,7 @@
             $.each(list,function (index,item) {
                 $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.name + "</td><td>" + item.mobilePhone + "</td><td>" + item.idCard
                     +"</td><td>" + item.installmentAmount +"</td><td>" + item.interestRate + "</td>" +
-                    "<td><a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a>|<a onclick=deleteInfo(\""+item.installmentEntityId+"\")>删除</a></td></tr>");
+                    "<td><a onclick=modifyInfo(\""+item.installmentEntityId+"\")>修改</a>|<a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a>|<a onclick=deleteInfo(\""+item.installmentEntityId+"\")>删除</a></td></tr>");
                 total = total + item.installmentAmount;
             });
             $("#tbody").append("<tr><th colspan='4'>总计：</th><td>"+total+"</td><td></td></tr>");
@@ -108,6 +108,10 @@
 
     function detailInfo(id){
         window.location.href = "${pageContext.request.contextPath}/deatil?id="+id;
+    }
+
+    function modifyInfo(id){
+        window.location.href = "${pageContext.request.contextPath}/edit?id="+id;
     }
 
     function callbackDel(data){

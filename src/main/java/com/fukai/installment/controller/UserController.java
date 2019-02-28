@@ -77,6 +77,60 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Map<String, Object> editUser(@RequestBody User4Creat bean) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        User user1 = userService.findByMobile(bean.getMobilePhone());
+        User user = userService.queryUser(bean.getUserId());
+        if(user1 != null && !StringUtils.equals(user1.getMobilePhone(),user.getMobilePhone())){
+            result.put("retCode","500");
+            result.put("retMsg","该手机号已经存在！");
+            return result;
+        }
+
+        user.setName(bean.getName());
+        user.setCreateTime(new Date());
+        user.setIdCard(bean.getIdCard());
+        user.setMobilePhone(bean.getMobilePhone());
+
+        InstallmentEntity installmentEntity = userService.findOne(bean.getInstallmentEntityId());
+
+
+        if(installmentEntity.getInterestRate() != bean.getInterestRate()
+                || installmentEntity.getInstallmentAmount() != bean.getInstallmentAmount()
+                || installmentEntity.getRepayNumber() != bean.getRepayNumber()){
+            installmentEntity.setInstallmentAmount(bean.getInstallmentAmount());
+            installmentEntity.setInterestRate(bean.getInterestRate());
+            installmentEntity.setRepayNumber(bean.getRepayNumber());
+            installmentEntity.setRepayCardNumber(bean.getRepayCardNumber());
+            installmentEntity.setRepayDate(bean.getRepayDate());
+            installmentEntity.setProfileNumber(bean.getProfileNumber());
+            installmentEntity.setRepayType(bean.getRepayType());
+            //重新计算
+            try {
+                userService.deleteInfo(installmentEntity.getId());
+                result = userService.save(user, installmentEntity);
+            }catch (Exception e){
+                result.put("retCode","500");
+                result.put("retMsg","创建修改失败！");
+            }
+
+        }else{
+            try {
+                result = userService.save2(user, installmentEntity);
+            }catch (Exception e){
+                result.put("retCode","500");
+                result.put("retMsg","修改用户失败！");
+            }
+        }
+
+
+        return result;
+    }
+
     /**
      * 查询用户列表
      * @return

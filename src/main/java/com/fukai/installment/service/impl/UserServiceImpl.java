@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 String id = UUID.randomUUID().toString();
                 installmentInfoEntity.setId(id);
                 installmentInfoEntity.setInstallId(installmentEntity.getId());
-                installmentInfoEntity.setRepayState("1");//默认已还款
+                installmentInfoEntity.setRepayState("0");//默认已还款
                 installmentInfoEntity.setRepayDate(i+1);
                 installmentInfoEntity.setRepayAmount(averageAmount);
                 if (i==0){
@@ -222,12 +222,28 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
     public void deleteInfo(String infoId) {
         installmentInfoRepository.deleteByInstallId(infoId);
+        InstallmentEntity installmentEntity = installmentRepository.findOne(infoId);
         installmentRepository.delete(infoId);
+        if(installmentEntity != null){
+            userRepository.delete(installmentEntity.getUserId());
+        }
+
     }
 
     @Override
     public void updatePass(String userId, String newPass) {
         userRepository.updatePass(userId,newPass);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> save2(User user, InstallmentEntity installmentEntity) {
+        Map<String,Object> result = new HashMap<String,Object>();
+        userRepository.save(user);
+        installmentRepository.save(installmentEntity);
+        result.put("retCode","200");
+        result.put("retMsg", "修改用户信息成功！");
+        return result;
     }
 
 }

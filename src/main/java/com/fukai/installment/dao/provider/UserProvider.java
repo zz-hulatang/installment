@@ -16,9 +16,11 @@ public class UserProvider {
         if(StringUtils.isNotBlank((String) map.get("keyWord"))){
             sql.append(" where a.mobilePhone like CONCAT('%',#{keyWord},'%') " +
                     "or a.idCard like CONCAT('%',#{keyWord},'%') " +
-                    "or a.name like CONCAT('%',#{keyWord},'%') ");
+                    "or a.idCard like CONCAT('%',#{keyWord},'%') " +
+                    "or b.repayCardNumber like CONCAT('%',#{keyWord},'%') " +
+                    "or b.profileNumber like CONCAT('%',#{keyWord},'%') ");
         }
-        sql.append(" order by a.createTime asc limit #{page},#{size}");
+        sql.append(" order by a.createTime desc limit #{page},#{size}");
         return sql.toString();
     }
 

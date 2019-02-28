@@ -36,4 +36,6 @@ public interface UserService {
     void deleteInfo(String infoId);
 
     void updatePass(String userId, String newPass);
+
+    Map<String, Object> save2(User user, InstallmentEntity installmentEntity);
 }
