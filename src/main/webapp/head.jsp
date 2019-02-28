@@ -13,6 +13,7 @@
 <link href="${pageContext.request.contextPath}/static/assets/css/custom-styles.css" rel="stylesheet" />
 
 <link href="${pageContext.request.contextPath}/static/style/bootstrap-select.min.css" rel="stylesheet" >
+<link href="${pageContext.request.contextPath}/static/style/bootstrap-datetimepicker.min.css" rel="stylesheet" >
 <!-- Google Fonts-->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/js/Lightweight-Chart/cssCharts.css">
@@ -40,3 +41,4 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/paging.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>

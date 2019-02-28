@@ -11,11 +11,12 @@ import java.util.Map;
 public class UserProvider {
     public static String getUserList(Map<String,Object> map){
         StringBuilder sql = new StringBuilder();
-        sql.append("select a.mobilePhone,a.idCard,b.installmentAmount,b.id installmentEntityId from user a " +
+        sql.append("select a.name,a.mobilePhone,a.idCard,b.installmentAmount,b.id installmentEntityId,b.interestRate from user a " +
                 "right join installment b on a.id=b.userId ");
         if(StringUtils.isNotBlank((String) map.get("keyWord"))){
             sql.append(" where a.mobilePhone like CONCAT('%',#{keyWord},'%') " +
-                    "or a.idCard like CONCAT('%',#{keyWord},'%') ");
+                    "or a.idCard like CONCAT('%',#{keyWord},'%') " +
+                    "or a.name like CONCAT('%',#{keyWord},'%') ");
         }
         sql.append(" order by a.createTime asc limit #{page},#{size}");
         return sql.toString();

@@ -121,10 +121,10 @@
                                                 <input type="text" class="form-control" id="repayCardNumber" name="repayCardNumber" placeholder="还款卡号">
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" >
                                             <label for="repayDate" class="col-sm-2 control-label">首次还款日期</label>
-                                            <div class="col-sm-4">
-                                                <input type="date" class="form-control" id="repayDate" name="repayDate" placeholder="首次还款日期">
+                                            <div class=" col-sm-4">
+                                                <input type="text" class="form-control" readonly id="repayDate" name="repayDate" placeholder="首次还款日期">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -166,11 +166,25 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
 <script>
 
     $(document).ready(function () {
         if($("#userId").val() == ''){
             window.location.href='${pageContext.request.contextPath}/index.jsp';
+        }else{
+            $("#repayDate").datetimepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
         }
     });
 

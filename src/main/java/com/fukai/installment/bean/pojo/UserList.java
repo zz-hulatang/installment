@@ -5,10 +5,12 @@ package com.fukai.installment.bean.pojo;
  * @Date: 2019-02-26 19:10
  */
 public class UserList {
+    private String name;
     private String mobilePhone;
     private String idCard;
     private double installmentAmount;
     private String installmentEntityId;
+    private double interestRate;
 
     public String getMobilePhone() {
         return mobilePhone;
@@ -40,5 +42,21 @@ public class UserList {
 
     public void setInstallmentEntityId(String installmentEntityId) {
         this.installmentEntityId = installmentEntityId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
     }
 }

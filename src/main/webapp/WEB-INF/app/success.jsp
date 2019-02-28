@@ -45,9 +45,11 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>姓名</th>
                                                 <th>手机号</th>
                                                 <th>身份证号</th>
                                                 <th>贷款本金</th>
+                                                <th>执行利率</th>
                                                 <th>操作</th>
                                             </tr>
                                         </thead>
@@ -91,11 +93,14 @@
     function showList(list) {
         $("#tbody").html("");
         if(list.length > 0){
+            var total = 0;
             $.each(list,function (index,item) {
-                $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.mobilePhone + "</td><td>" + item.idCard
-                    +"</td><td>" + item.installmentAmount +"</td>" +
+                $("#tbody").append("<tr><th>" + (index+1) + "</th><td>" + item.name + "</td><td>" + item.mobilePhone + "</td><td>" + item.idCard
+                    +"</td><td>" + item.installmentAmount +"</td><td>" + item.interestRate + "</td>" +
                     "<td><a onclick=detailInfo(\""+item.installmentEntityId+"\")>详情</a>|<a onclick=deleteInfo(\""+item.installmentEntityId+"\")>删除</a></td></tr>");
+                total = total + item.installmentAmount;
             });
+            $("#tbody").append("<tr><th colspan='4'>总计：</th><td>"+total+"</td><td></td></tr>");
         }else{
             $("#tbody").html("没有数据");
         }
