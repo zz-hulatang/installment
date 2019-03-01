@@ -24,7 +24,7 @@ public class Jobs {
      * @author luoxiaozhu
      * @date 2019-02-28 18:13
      */
-    @Scheduled(cron = "0 05 15 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void repayStateJob(){
         userService.repayStateJob();
     }
