@@ -1,9 +1,11 @@
-package com.fukai.installment.service.impl;
+package com.fukai.installment.controller;
 
+import com.fukai.installment.bean.User;
 import com.fukai.installment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: luoxiaozhu
@@ -22,7 +24,7 @@ public class Jobs {
      * @author luoxiaozhu
      * @date 2019-02-28 18:13
      */
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 05 15 * * ?")
     public void repayStateJob(){
         userService.repayStateJob();
     }

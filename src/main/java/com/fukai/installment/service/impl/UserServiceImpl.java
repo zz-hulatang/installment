@@ -74,12 +74,13 @@ public class UserServiceImpl implements UserService {
             //定义日期实例
         Calendar data = Calendar.getInstance();
         data.setTime(repayDate);//设置日期起始时间
+        Date date = new Date();
         for (int i = 0; i < repayNumber; i++) {
                 InstallmentInfoEntity installmentInfoEntity = new InstallmentInfoEntity();
                 String id = UUID.randomUUID().toString();
                 installmentInfoEntity.setId(id);
                 installmentInfoEntity.setInstallId(installmentEntity.getId());
-                installmentInfoEntity.setRepayState("0");//默认未还款
+                //installmentInfoEntity.setRepayState("0");//默认未还款
                 installmentInfoEntity.setRepayDate(i+1);
                 installmentInfoEntity.setRepayAmount(averageAmount);
                 if (i==0){
@@ -87,6 +88,11 @@ public class UserServiceImpl implements UserService {
                 }else{
                     data.add(Calendar.MONTH,1);//日期递增
                     installmentInfoEntity.setRepayTime(data.getTime());
+                }
+                if(date.before(installmentInfoEntity.getRepayTime())){
+                    installmentInfoEntity.setRepayState("0");
+                }else{
+                    installmentInfoEntity.setRepayState("1");
                 }
                 installmentInfoRepository.save(installmentInfoEntity);
             }
@@ -130,23 +136,6 @@ public class UserServiceImpl implements UserService {
     @Override
     // 查询贷款明细数据
     public List<InstallmentInfoEntity> selectInstallmentInfoList(String installId) {
-        List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
-        ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        for (InstallmentInfoEntity info:infoEntities) {
-            Date date = new Date();
-            boolean flag = date.after(info.getRepayTime());
-            if (flag==true){
-                info.setRepayTime1(format.format(info.getRepayTime()));
-                resultList.add(info);
-            }
-        }
-        return resultList;
-    }
-
-    @Override
-    // 查询贷款明细数据
-    public List<InstallmentInfoEntity> selectInstallmentInfoList2(String installId) {
         List<InstallmentInfoEntity> infoEntities = installmentInfoRepository.findByInstallIdOrderByRepayTimeAsc(installId);
         ArrayList<InstallmentInfoEntity> resultList = new ArrayList<InstallmentInfoEntity>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -248,7 +237,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void repayStateJob() {
-        installmentInfoRepository.repayStateJob();
+        userMapper.repayStateJob();
+    }
+
+    @Override
+    public void save3(User user) {
+        userRepository.save(user);
     }
 
 }

@@ -20,7 +20,6 @@ public interface UserService {
     void deleteUser(User user);
     List<UserList> selectUserList(String keyWord, Pageable request);
     List<InstallmentInfoEntity> selectInstallmentInfoList(String installId);
-    List<InstallmentInfoEntity> selectInstallmentInfoList2(String installId);
 
     User findByMobilePhoneAndPassword(String mobilePhone, String password);
     Map<String,Object> editRepayState(String installmentInfoId,String state) throws Exception;
@@ -40,4 +39,6 @@ public interface UserService {
     Map<String, Object> save2(User user, InstallmentEntity installmentEntity);
 
     void repayStateJob();
+
+    void save3(User user);
 }

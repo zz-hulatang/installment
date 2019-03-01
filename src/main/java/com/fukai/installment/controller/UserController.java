@@ -165,22 +165,6 @@ public class UserController {
         return map;
     }
 
-    /**
-     * 查询还款详情app
-     * @param installId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/queryInstallmentInfo2",method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String,Object> queryInstallmentList2(String installId) throws Exception{
-        Map<String,Object> map = new HashMap<>();
-        InstallmentEntity installmentEntity = userService.findOne(installId);
-        map.put("count",installmentEntity.getRepayNumber());
-        List<InstallmentInfoEntity> infoList = userService.selectInstallmentInfoList2(installId);
-        map.put("data",infoList);
-        return map;
-    }
 
     /**
      * 查询贷款信息主表 app调用
@@ -260,6 +244,12 @@ public class UserController {
             result.put("retMsg","修改密码失败！");
         }
         return result;
+    }
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void test(){
+        userService.repayStateJob();
     }
 
 }

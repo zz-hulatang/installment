@@ -4,6 +4,7 @@ import com.fukai.installment.bean.pojo.UserList;
 import com.fukai.installment.dao.provider.UserProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -23,4 +24,7 @@ public interface UserMapper {
 
     @SelectProvider(type = UserProvider.class,method = "selectUserListCount")
     int selectUserListCount(String keyWord);
+
+    @Update(value = "update installmentInfo set repayState = 1 where repayState = 0 and repayTime < SYSDATE()")
+    void repayStateJob();
 }

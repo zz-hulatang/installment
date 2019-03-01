@@ -129,7 +129,7 @@
     }
 
     function createDate(infoId) {
-        getRequest("${pageContext.request.contextPath}/user/queryInstallmentInfo2?installId="+infoId,callback1);
+        getRequest("${pageContext.request.contextPath}/user/queryInstallmentInfo?installId="+infoId,callback1);
     }
 </script>
 
